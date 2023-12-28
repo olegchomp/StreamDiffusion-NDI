@@ -1,0 +1,3 @@
+opencv-python
+ndi-python
+python-osc
