@@ -16,14 +16,15 @@ NDI & OSC extension for real-time Stable Diffusion interactive generation with [
 2) Configure ```config.json```
 3) Run in StreamDiffusion environment ```python sd_ndi.py```
 4) Add NDI output to send images in Stable Diffusion and NDI input (SD-NDI) to receive processed images
-5) Send string ```/prompt``` with OSC to change the prompt during the inference
+5) Send string with OSC at ```/prompt``` address change the prompt during the inference
+6) You can get inference FPS at ```/fps``` address on client side
 
 ## Config:
-Look in ```config.json``` for example configuration.
+Look in ```config.json``` for an example configuration.
 
 	"sd_model": "path to diffusers model",
 	"t_index_list": [Number of inference steps],
-	"engine": "path to folder with accelerated model",
+	"engine": "path to the folder with the accelerated model",
 	"min_batch_size": depends on your configuration,
 	"max_batch_size": depends on your configuration,
 	"osc_out_adress": client address for receiving FPS value,
