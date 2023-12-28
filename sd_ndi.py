@@ -37,7 +37,7 @@ def np2tensor(image_np: np.ndarray) -> torch.Tensor:
     image_tensors = images.to(torch.float16)
     return image_tensors
 
-def prompt(address: str, *args: List[Any]) -> None:
+def oscprompt(address: str, *args: List[Any]) -> None:
     if address == "/prompt":
         global shared_message
         shared_message = args[0]
@@ -122,7 +122,7 @@ server_port = osc_in_port
 shared_message = None
 
 dispatcher = Dispatcher()
-dispatcher.map("/prompt", prompt)
+dispatcher.map("/prompt", oscprompt)
 
 server = osc_server.ThreadingOSCUDPServer(
       (server_address, server_port), dispatcher)
