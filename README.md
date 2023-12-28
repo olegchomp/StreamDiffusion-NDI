@@ -8,7 +8,8 @@ NDI & OSC extension for real-time Stable Diffusion interactive generation with [
 * OSC communication for prompt and FPS.
 
 ## Installation:
-1) Install [StreamDiffusion](https://github.com/cumulo-autumn/StreamDiffusion?tab=readme-ov-file#installation) with TensorRT
+Supported version Python 3.10
+1) Install [StreamDiffusion](https://github.com/cumulo-autumn/StreamDiffusion?tab=readme-ov-file#installation) with TensorRT.
 2) Install SteamDiffusion-NDI in StreamDiffusion environment with ```pip install -r requirements.txt```
 
 ## Usage:
