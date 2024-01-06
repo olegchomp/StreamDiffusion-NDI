@@ -28,6 +28,7 @@ Look in ```config.json``` for an example configuration.
 	"engine": "path to the folder with the accelerated model",
 	"min_batch_size": depends on your configuration,
 	"max_batch_size": depends on your configuration,
+ 	"ndi_name": "NDI client name to recieve from",
 	"osc_out_adress": client address for receiving FPS value,
 	"osc_out_port": client port for receiving FPS value,
 	"osc_in_adress": server address for receiving commands.,
