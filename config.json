@@ -4,6 +4,7 @@
 	"engine": "../engines/darkstorm2150/Protogen_v2.2_Official_Release--lcm_lora-True--tiny_vae-True--max_batch-2--min_batch-2--mode-img2img",
 	"min_batch_size": 1,
 	"max_batch_size": 2,
+	"ndi_name": "DESKTOP-KKKKKKK (TouchDesigner)",
 	"osc_out_adress": "127.0.0.1",
 	"osc_out_port": 12345,
 	"osc_in_adress": "127.0.0.1",

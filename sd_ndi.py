@@ -37,7 +37,7 @@ def np2tensor(image_np: np.ndarray) -> torch.Tensor:
     image_tensors = images.to(torch.float16)
     return image_tensors
 
-def prompt(address: str, *args: List[Any]) -> None:
+def oscprompt(address: str, *args: List[Any]) -> None:
     if address == "/prompt":
         global shared_message
         shared_message = args[0]
@@ -54,6 +54,7 @@ t_index_list = config_data['t_index_list']
 engine = config_data['engine']
 min_batch_size = config_data['min_batch_size']
 max_batch_size = config_data['max_batch_size']
+ndi_name = config_data['ndi_name']
 osc_out_adress = config_data['osc_out_adress']
 osc_out_port = config_data['osc_out_port']
 osc_in_adress = config_data['osc_in_adress']
@@ -93,20 +94,26 @@ stream.prepare(prompt)
 # NDI
 ndi_find = ndi.find_create_v2()
 
-sources = []
-while not len(sources) > 0:
-    print('Looking for sources ...')
-    ndi.find_wait_for_sources(ndi_find, 1000)
+source = ''
+while True:
+    if not ndi.find_wait_for_sources(ndi_find, 5000):
+        print('NDI: No change to the sources found.')
+        continue
     sources = ndi.find_get_current_sources(ndi_find)
-
-print('NDI connected')
+    print('NDI: Network sources (%s found).' % len(sources))
+    for i, s in enumerate(sources):
+        print('%s. %s' % (i + 1, s.ndi_name))
+        if s.ndi_name == ndi_name:
+            source = s
+    if source != '':
+        print(f'NDI: Connected to {source.ndi_name}')
+        break   
 
 ndi_recv_create = ndi.RecvCreateV3()
 ndi_recv_create.color_format = ndi.RECV_COLOR_FORMAT_BGRX_BGRA
 ndi_recv = ndi.recv_create_v3(ndi_recv_create)
-ndi.recv_connect(ndi_recv, sources[0])
+ndi.recv_connect(ndi_recv, source)
 ndi.find_destroy(ndi_find)
-cv.startWindowThread()
 send_settings = ndi.SendCreate()
 send_settings.ndi_name = 'SD-NDI'
 ndi_send = ndi.send_create(send_settings)
@@ -122,7 +129,7 @@ server_port = osc_in_port
 shared_message = None
 
 dispatcher = Dispatcher()
-dispatcher.map("/prompt", prompt)
+dispatcher.map("/prompt", oscprompt)
 
 server = osc_server.ThreadingOSCUDPServer(
       (server_address, server_port), dispatcher)
@@ -193,6 +200,5 @@ finally:
     ndi.recv_destroy(ndi_recv)
     ndi.send_destroy(ndi_send)
     ndi.destroy()
-    cv.destroyAllWindows()
     server.shutdown()
     server_thread.join()
